@@ -8,18 +8,29 @@ Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36
 Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11
 INPUT
 
-input.each_line => data
-#DATA.readlines  => data
+#input.each_line => data
+DATA.readlines  => data
+
+# { id => number of copies of that card }
+card_counts = Hash.new { |h, k| h[k] = 1 }
 
 data.map do |card|
-  card.split            => label, id, *numbers
+  card.split            => _, id, *numbers
+  id.to_i               => id
   numbers               => *winning, "|", *ours
   (winning & ours).size => match_count
+
+  card_counts[id].times do
+    match_count.times do |i|
+      card_counts[id + i + 1] += 1
+    end
+  end
 
   match_count > 0 ? 2 ** (match_count - 1) : 0
 end => scores
 
-p scores.sum
+p card_counts.values.sum
+#p scores.sum
 
 __END__
 Card   1: 99 71 95 70 36 79 78 84 31 10 |  5 45 54 83  3 38 89 35 80 49 76 15 63 20 21 94 65 55 44  4 75 56 85 92 90

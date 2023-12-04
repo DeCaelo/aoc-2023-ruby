@@ -12,10 +12,9 @@ INPUT
 DATA.readlines  => data
 
 data.map do |card|
-  card.split => label, id, *numbers
-  numbers => *winning, "|", *ours
+  card.split            => _, _, *numbers
+  numbers               => *winning, "|", *ours
   (winning & ours).size => match_count
-
   match_count > 0 ? 2 ** (match_count - 1) : 0
 end => scores
 
