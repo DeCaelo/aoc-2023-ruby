@@ -48,20 +48,11 @@ class Game
   end
 
   def possible?
-    # Look to see if there are any invalid 'moves' in any round
-    # 1 round => {:blue=>3, :red=>4}
-    rounds.each do |round|
-      round.each do |color, count|
-        if color == :red && count > 12
-          return false
-        elsif color == :blue && count > 14
-          return false
-        elsif color == :green && count > 13
-          return false
-        end
-      end
-    end
-    true
+    max_cubes in {
+      red: ..12,
+      green: ..13,
+      blue: ..14,
+    }
   end
 end
 
@@ -70,14 +61,7 @@ data = DATA.readlines
 
 r = data.map do |line|
   g = Game.parse(line)
-  p line
-  p g.max_cubes
-  p g.max_power
-  # if g.possible?
-  #   g.id
-  # else
-  #   0
-  # end
+  g.max_power
 end
 p r.sum
 
