@@ -24,11 +24,10 @@ target = "ZZZ"
 c = 0
 
 until cur == target
-  left, right = nodes[cur] if cur != nil
   if turns.first == "L"
-    cur = left
+    cur, _ = nodes[cur]
   else
-    cur = right
+    _, cur = nodes[cur]
   end
 
   c += 1
