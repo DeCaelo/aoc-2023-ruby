@@ -15,21 +15,19 @@ def predict(stat)
   layers = [stat]
 
   until stat.all?(&:zero?)
-    stat.each_cons(2).map do |a, b|
-      b - a
-    end => stat
+    stat = stat.each_cons(2).map { _2 - _1 }
     layers.unshift(stat)
   end
 
-  layers.each_cons(2) do |prev, nxt|
-    delta = prev.last
-    nxt.push(delta + nxt.last)
+  layers.each_cons(2) do |(p1, *, p2), nxt|
+    nxt.unshift(nxt.first - p1)
+    nxt.push(nxt.last + p2)
   end
 
   layers.last
 end
 
-p stats.map { |stat| predict(stat) }.map(&:last).sum
+p stats.map { |stat| predict(stat) }.map(&:first).sum
 
 __END__
 0 7 18 31 55 131 378 1093 2953 7398 17321 38257 80352 161507 312219 582730 1053014 1845605 3139788 5182383 8283893
